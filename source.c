@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 int readNextField(char *, int, FILE *);
 
@@ -17,9 +18,32 @@ int main(int argc, char *argv[]) {
   fp = fopen("data", "r"); // read mode
 
   while(1) {
-    int len = readNextField(buff, 200, fp);
-    printf("'%s'\n", buff);
-    if (len == 0) break;
+    // int len = readNextField(buff, 200, fp);
+    // printf("'%s'\n", buff);
+    // if (len == 0) break;
+
+    int len;
+    for (int i = 0; i < 4; i++) { // read 4 fields per row
+      len = readNextField(buff, 200, fp);
+      if (len == 0) return 1;
+      char title[len];
+      strcpy(title, buff);
+
+      len = readNextField(buff, 200, fp);
+      char desc[len];
+      strcpy(desc, buff);
+
+
+      len = readNextField(buff, 200, fp);
+      char date[len];
+      strcpy(date, buff);
+
+      readNextField(buff, 200, fp);
+      int isDone = 0;
+      if (buff[0] == 'T') isDone = 1;
+
+      printf("%s : %s\n\t%s\n\n", date, title, desc);
+    }
   }
 }
 
