@@ -3,6 +3,7 @@
 #include <string.h>
 
 int readNextField(char *, int, FILE *);
+void printNTasks(int);
 
 
 int main(int argc, char *argv[]) {
@@ -11,43 +12,38 @@ int main(int argc, char *argv[]) {
   //   printf("\t%s\n", argv[i]);
   // }
 
-
-  char buff[200];
-
-  FILE *fp;
-  fp = fopen("data", "r"); // read mode
-
-  while(1) {
-    // int len = readNextField(buff, 200, fp);
-    // printf("'%s'\n", buff);
-    // if (len == 0) break;
-
-    int len;
-    for (int i = 0; i < 4; i++) { // read 4 fields per row
-      len = readNextField(buff, 200, fp);
-      if (len == 0) return 1;
-      char title[len];
-      strcpy(title, buff);
-
-      len = readNextField(buff, 200, fp);
-      char desc[len];
-      strcpy(desc, buff);
-
-
-      len = readNextField(buff, 200, fp);
-      char date[len];
-      strcpy(date, buff);
-
-      readNextField(buff, 200, fp);
-      int isDone = 0;
-      if (buff[0] == 'T') isDone = 1;
-
-      printf("%s : %s\n\t%s\n\n", date, title, desc);
-    }
-  }
+  printNTasks(1);
 }
 
 
+void printNTasks(int n) {
+  char buff[200];
+  FILE *fp;
+  fp = fopen("data", "r"); // read mode
+
+  for (int i = 0; i < n; i++) {
+    int len;
+    len = readNextField(buff, 200, fp);
+    if (len == 0) return;
+    char title[len];
+    strcpy(title, buff);
+
+    len = readNextField(buff, 200, fp);
+    char desc[len];
+    strcpy(desc, buff);
+
+
+    len = readNextField(buff, 200, fp);
+    char date[len];
+    strcpy(date, buff);
+
+    readNextField(buff, 200, fp);
+    int isDone = 0;
+    if (buff[0] == 'T') isDone = 1;
+
+    printf("%s : %s\n\t%s\n\n", date, title, desc);
+  }
+}
 
 int readNextField(char *buff, int max_len, FILE *fp) {
   char ch;
