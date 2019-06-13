@@ -6,25 +6,25 @@ void printNTasks(int);
 void printAllTasks();
 int readNextTask(char *, int, FILE *);
 int readNextField(char *, int, FILE *);
+void printHelp();
 
 
 void main(int argc, char *argv[]) {
-  // if (argc == 0) {
-  //   printNTasks(1);
-  //   return;
-  // }
-  //
-  // for (int i = 0; i < argc; i++) {
-  //   // printf("\t%s\n", argv[i]);
-  //   if (strcmp(argv[i], "add") == 0) {
-  //
-  //     printf("Add\n");
-  //
-  //   }
-  // }
 
+  // default: no arguments
+  if (argc == 1) return printNTasks(1);
 
-  printAllTasks();
+  // loop through all arguments
+  for (int i = 1; i < argc; i++) {
+    switch(argv[i][0]) {
+
+      default:
+        // Display help
+        printHelp();
+
+    }
+  }
+
 
 }
 
@@ -132,4 +132,14 @@ int readNextField(char *buff, int max_len, FILE *fp) {
     }
     buff[i] = ch;
   }
+}
+
+
+
+void printHelp() {
+    printf("\nTask Manager: arguments\n\n");
+    printf("\ta <title> <description> <importance> : add task\n");
+    printf("\td <title> : toggle task-complete\n");
+    printf("\tx <title> : delete task\n");
+    printf("\th : this help manual\n");
 }
