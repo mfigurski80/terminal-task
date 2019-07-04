@@ -24,6 +24,10 @@ void main(int argc, char *argv[]) {
       addTask(argv[2], argv[3], argv[4]);
       break;
 
+    case 'p':
+      printAllTasks();
+      break;
+
     case 'd':
       break;
 
@@ -51,7 +55,7 @@ void addTask(
   printf("TITLE: %s\nDESCRIPTION: %s\nIMPORTANCE: %s\n", title, description, importance);
   FILE *fp;
   fp = fopen(fileName, "a"); // append mode
-  fprintf(fp, "%s;%s;%s;F", title, description, importance);
+  fprintf(fp, "%s;%s;%s;F\n", title, description, importance);
 }
 
 
@@ -166,6 +170,7 @@ int readNextField(char *buff, int max_len, FILE *fp) {
 
 void printHelp() {
     printf("\nTask Manager: arguments\n\n");
+    printf("\t-p : print all tasks\n");
     printf("\t-a <title> <description> <importance> : add task\n");
     printf("\t-d <title> : toggle task-complete\n");
     printf("\t-x <title> : delete task\n");
