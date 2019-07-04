@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+void addTask(char *, char *, char *);
 void printNTasks(int);
 void printAllTasks();
 int readNextTask(char *, int, FILE *);
@@ -9,25 +10,49 @@ int readNextField(char *, int, FILE *);
 void printHelp();
 
 
+char fileName[] = "./data";
+
 void main(int argc, char *argv[]) {
 
   // default: no arguments
   if (argc == 1) return printNTasks(1);
 
-  // loop through all arguments
-  for (int i = 1; i < argc; i++) {
-    switch(argv[i][0]) {
+  // read second argument, switch second character...
+  switch(argv[1][1]) {
 
-      default:
-        // Display help
-        printHelp();
+    case 'a':
+      addTask(argv[2], argv[3], argv[4]);
+      break;
 
-    }
+    case 'd':
+      break;
+
+    case 'h':
+    default:
+      // Display help
+      printHelp();
   }
 
 
 }
 
+
+/**
+ * Adds a task to end of file
+ * @param title       String pointer to title
+ * @param description String pointer to description
+ * @param importance  String pointer to importance (should be 0-9 int tho)
+ */
+void addTask(
+  char *title,
+  char *description,
+  char *importance
+) {
+  printf("TITLE: %s\nDESCRIPTION: %s\nIMPORTANCE: %s\n", title, description, importance);
+  FILE *fp;
+  fp = fopen(fileName, "a"); // append mode
+  fprintf(fp, "%s;%s;%s;F", title, description, importance);
+}
 
 
 /**
@@ -37,7 +62,7 @@ void main(int argc, char *argv[]) {
 void printNTasks(int n) {
   char buff[600];
   FILE *fp;
-  fp = fopen("data", "r"); // read mode
+  fp = fopen(fileName, "r"); // read mode
 
   int len;
 
@@ -48,10 +73,13 @@ void printNTasks(int n) {
   }
 }
 
+/**
+ * Prints all tasks
+ */
 void printAllTasks() {
   char buff[600];
   FILE *fp;
-  fp = fopen("data", "r");
+  fp = fopen(fileName, "r");
 
   int len = 1;
 
@@ -60,6 +88,9 @@ void printAllTasks() {
     printf("%s\n", buff);
   }
 }
+
+
+
 
 
 /**
@@ -107,9 +138,6 @@ int readNextTask(char *buff, int max_len, FILE *fp) {
 }
 
 
-
-
-
 /**
  * Reads next field from given file
  * @param  buff    String to output into
@@ -138,8 +166,8 @@ int readNextField(char *buff, int max_len, FILE *fp) {
 
 void printHelp() {
     printf("\nTask Manager: arguments\n\n");
-    printf("\ta <title> <description> <importance> : add task\n");
-    printf("\td <title> : toggle task-complete\n");
-    printf("\tx <title> : delete task\n");
-    printf("\th : this help manual\n");
+    printf("\t-a <title> <description> <importance> : add task\n");
+    printf("\t-d <title> : toggle task-complete\n");
+    printf("\t-x <title> : delete task\n");
+    printf("\t-h : this help manual\n");
 }
